@@ -1,0 +1,50 @@
+Application:
+  workers:
+     invoices:
+       postgres_url: postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+       rabbitmq_url: amqp://${AMQP_USER}:${AMQP_PASS}@${AMQP_HOST}:5672/%2f
+       confirm: False
+
+  statsd:
+    enabled: true
+    host: localhost
+    port: 8125
+
+Logging:
+  version: 1
+  formatters:
+    verbose:
+      format: '%(levelname) -10s %(asctime)s  %(process)-6d %(processName) -20s %(name) -18s: %(message)s'
+      datefmt: '%Y-%m-%d %H:%M:%S'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: verbose
+      debug_only: True
+  loggers:
+    helper:
+      handlers: [console]
+      level: INFO
+      propagate: true
+    mikkoo:
+      handlers: [console]
+      level: INFO
+      propagate: true
+    pika:
+      handlers: [console]
+      level: ERROR
+      propagate: true
+    queries:
+      handlers: [console]
+      level: ERROR
+      propagate: true
+    tornado:
+      handlers: [console]
+      level: ERROR
+      propagate: true
+  root:
+    handlers: [console]
+    level: DEBUG
+    propagate: true
+  disable_existing_loggers: true
+  incremental: false
